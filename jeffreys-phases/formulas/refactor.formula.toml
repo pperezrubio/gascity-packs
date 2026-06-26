@@ -1,0 +1,69 @@
+description = """
+Code quality remediation workflow. Runs a full codebase audit, removes AI slop
+and dead code, updates dependencies, and verifies no regressions. Use to clean
+up a mature codebase without changing behavior.
+"""
+formula = "refactor"
+version = 1
+contract = "graph.v2"
+target_required = true
+
+[metadata.gc.methodology]
+allowed_drain_policies = ["separate"]
+interaction_modes = ["interactive", "autonomous", "headless"]
+review_modes = ["report", "agent"]
+
+[vars]
+[vars.artifact_root]
+description = "Directory where stage artifacts are written."
+required = true
+
+[vars.context_path]
+description = "Optional source context bundle path."
+default = ""
+
+[vars.update_deps]
+description = "Whether to update dependencies (true/false)."
+default = "true"
+
+[[steps]]
+id = "prepare"
+title = "Prepare refactoring context"
+metadata = { "gc.run_target" = "gc.run-operator" }
+description_file = "../assets/workflows/refactor/prepare.md"
+
+[[steps]]
+id = "audit"
+title = "Full codebase audit"
+needs = ["prepare"]
+metadata = { "gc.run_target" = "phases.refactorer", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.audit_path" }
+description_file = "../assets/workflows/refactor/audit.md"
+
+[[steps]]
+id = "clean"
+title = "Remove AI slop, dead code, stubs, unnecessary abstractions"
+needs = ["audit"]
+metadata = { "gc.run_target" = "phases.refactorer" }
+description_file = "../assets/workflows/refactor/clean.md"
+
+[[steps]]
+id = "update-deps"
+title = "Update dependencies to latest stable"
+needs = ["clean"]
+condition = "{{update_deps}} == true"
+metadata = { "gc.run_target" = "phases.refactorer" }
+description_file = "../assets/workflows/refactor/update-deps.md"
+
+[[steps]]
+id = "verify"
+title = "Run full test suite — no regressions"
+needs = ["update-deps"]
+metadata = { "gc.run_target" = "gc.implementation-reviewer", "gc.build.artifact_schema" = "gc.build.review.v1", "gc.build.artifact_path_keys" = "gc.build.review_report_path" }
+description_file = "../assets/workflows/refactor/verify.md"
+
+[[steps]]
+id = "finalize"
+title = "Finalize refactoring report"
+needs = ["verify"]
+metadata = { "gc.run_target" = "gc.run-operator", "gc.build.artifact_schema" = "gc.build.final-report.v1", "gc.build.artifact_path_keys" = "gc.build.final_report_path" }
+description_file = "../assets/workflows/refactor/finalize.md"

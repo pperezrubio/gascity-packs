@@ -1,0 +1,3 @@
+description = "Security auditor with 130+ vulnerability patterns for SaaS and applications"
+scope = "rig"
+fallback = true

@@ -1,0 +1,84 @@
+description = """
+Comprehensive release preparation workflow. Runs test gates, fixes broken tests,
+bumps versions, rebuilds changelogs, builds cross-platform binaries, creates
+GitHub releases with checksums, and verifies installers.
+"""
+formula = "release"
+version = 1
+contract = "graph.v2"
+target_required = true
+
+[metadata.gc.methodology]
+allowed_drain_policies = ["separate"]
+interaction_modes = ["interactive", "autonomous"]
+review_modes = ["report"]
+
+[vars]
+[vars.artifact_root]
+description = "Directory where stage artifacts are written."
+required = true
+
+[vars.version]
+description = "Target version (e.g. 1.2.3). Leave empty for auto-detect."
+default = ""
+
+[vars.bump_type]
+description = "Version bump type: major, minor, or patch."
+default = "patch"
+
+[vars.push]
+description = "Whether to push after all checks pass."
+default = "false"
+
+[vars.open_pr]
+description = "Whether to open a PR after release."
+default = "false"
+
+[[steps]]
+id = "prepare"
+title = "Prepare release context"
+metadata = { "gc.run_target" = "gc.run-operator" }
+description_file = "../assets/workflows/release/prepare.md"
+
+[[steps]]
+id = "test-gate"
+title = "Run test suites, fix broken tests"
+needs = ["prepare"]
+metadata = { "gc.run_target" = "phases.release-engineer" }
+description_file = "../assets/workflows/release/test-gate.md"
+
+[[steps]]
+id = "version-bump"
+title = "Bump versions in all manifests"
+needs = ["test-gate"]
+metadata = { "gc.run_target" = "phases.release-engineer", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.version_path" }
+description_file = "../assets/workflows/release/version-bump.md"
+
+[[steps]]
+id = "changelog"
+title = "Rebuild CHANGELOG.md from git history"
+needs = ["version-bump"]
+metadata = { "gc.run_target" = "phases.doc-writer", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.changelog_path" }
+description_file = "../assets/workflows/release/changelog.md"
+
+[[steps]]
+id = "build"
+title = "Build cross-platform binaries with checksums"
+needs = ["changelog"]
+metadata = { "gc.run_target" = "phases.release-engineer", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.build_path" }
+description_file = "../assets/workflows/release/build.md"
+
+[[steps]]
+id = "publish"
+title = "Create release and publish packages"
+needs = ["build"]
+condition = "{{push}} == true"
+metadata = { "gc.run_target" = "gc.publisher" }
+description_file = "../assets/workflows/release/publish.md"
+
+[[steps]]
+id = "finalize"
+title = "Finalize release report"
+needs = ["publish"]
+metadata = { "gc.run_target" = "gc.run-operator", "gc.build.artifact_schema" = "gc.build.final-report.v1", "gc.build.artifact_path_keys" = "gc.build.final_report_path" }
+description_file = "../assets/workflows/release/finalize.md"

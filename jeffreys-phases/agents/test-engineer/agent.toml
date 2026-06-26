@@ -1,0 +1,3 @@
+description = "Comprehensive test suite creation: conformance, golden artifacts, E2E, integration"
+scope = "rig"
+fallback = true

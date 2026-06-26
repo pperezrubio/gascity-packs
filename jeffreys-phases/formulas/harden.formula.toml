@@ -1,0 +1,70 @@
+description = """
+Post-implementation hardening workflow. Runs multi-pass bug hunting, security
+auditing, a fix loop for findings, and a final verification pass. Use after
+build-basic completes to harden the codebase before release.
+"""
+formula = "harden"
+version = 1
+contract = "graph.v2"
+target_required = true
+
+[metadata.gc.methodology]
+allowed_drain_policies = ["separate"]
+interaction_modes = ["autonomous", "headless"]
+review_modes = ["report"]
+
+[vars]
+[vars.artifact_root]
+description = "Directory where stage artifacts are written."
+required = true
+
+[vars.context_path]
+description = "Optional source context bundle path."
+default = ""
+
+[vars.max_iterations]
+description = "Maximum fix/re-verify attempts."
+default = "5"
+
+[[steps]]
+id = "prepare"
+title = "Prepare hardening context"
+metadata = { "gc.run_target" = "gc.run-operator" }
+description_file = "../assets/workflows/harden/prepare.md"
+
+[[steps]]
+id = "bug-hunt"
+title = "Multi-pass bug hunt"
+needs = ["prepare"]
+metadata = { "gc.run_target" = "phases.bug-hunter", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.bug_hunt_path" }
+description_file = "../assets/workflows/harden/hunt.md"
+
+[[steps]]
+id = "security-audit"
+title = "Security vulnerability audit"
+needs = ["bug-hunt"]
+metadata = { "gc.run_target" = "phases.security-auditor", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.security_audit_path" }
+description_file = "../assets/workflows/harden/security.md"
+
+[[steps]]
+id = "fix"
+title = "Fix findings from bug hunt and security audit"
+needs = ["security-audit"]
+metadata = { "gc.run_target" = "gc.implementation-worker" }
+description_file = "../assets/workflows/harden/fix.md"
+expand = "fix-loop"
+expand_vars = { findings_path = "{{artifact_root}}/harden/findings.md", implementation_target = "gc.implementation-worker", max_iterations = "{{max_iterations}}" }
+
+[[steps]]
+id = "verify"
+title = "Verify all fixes — clean scan and tests pass"
+needs = ["fix"]
+metadata = { "gc.run_target" = "phases.bug-hunter", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.verify_path" }
+description_file = "../assets/workflows/harden/verify.md"
+
+[[steps]]
+id = "finalize"
+title = "Finalize hardening report"
+needs = ["verify"]
+metadata = { "gc.run_target" = "gc.run-operator", "gc.build.artifact_schema" = "gc.build.final-report.v1", "gc.build.artifact_path_keys" = "gc.build.final_report_path" }
+description_file = "../assets/workflows/harden/finalize.md"

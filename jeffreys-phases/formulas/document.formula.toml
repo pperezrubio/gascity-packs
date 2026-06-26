@@ -1,0 +1,57 @@
+description = """
+Technical documentation workflow. Generates or revises README, creates API
+documentation from source, and rebuilds CHANGELOG from git history.
+"""
+formula = "document"
+version = 1
+contract = "graph.v2"
+target_required = true
+
+[metadata.gc.methodology]
+allowed_drain_policies = ["separate"]
+interaction_modes = ["interactive", "autonomous"]
+review_modes = ["report"]
+
+[vars]
+[vars.artifact_root]
+description = "Directory where stage artifacts are written."
+required = true
+
+[vars.include_api_docs]
+description = "Whether to generate API documentation."
+default = "true"
+
+[[steps]]
+id = "prepare"
+title = "Prepare documentation context"
+metadata = { "gc.run_target" = "gc.run-operator" }
+description_file = "../assets/workflows/document/prepare.md"
+
+[[steps]]
+id = "readme"
+title = "Generate or revise README.md"
+needs = ["prepare"]
+metadata = { "gc.run_target" = "phases.doc-writer", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.readme_path" }
+description_file = "../assets/workflows/document/readme.md"
+
+[[steps]]
+id = "api-docs"
+title = "Generate API documentation from source"
+needs = ["readme"]
+condition = "{{include_api_docs}} == true"
+metadata = { "gc.run_target" = "phases.doc-writer", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.api_docs_path" }
+description_file = "../assets/workflows/document/api-docs.md"
+
+[[steps]]
+id = "changelog"
+title = "Rebuild CHANGELOG.md from git history"
+needs = ["api-docs"]
+metadata = { "gc.run_target" = "phases.doc-writer", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.changelog_path" }
+description_file = "../assets/workflows/document/changelog.md"
+
+[[steps]]
+id = "finalize"
+title = "Finalize documentation report"
+needs = ["changelog"]
+metadata = { "gc.run_target" = "gc.run-operator", "gc.build.artifact_schema" = "gc.build.final-report.v1", "gc.build.artifact_path_keys" = "gc.build.final_report_path" }
+description_file = "../assets/workflows/document/finalize.md"
