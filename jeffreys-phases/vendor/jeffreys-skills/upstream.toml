@@ -1,0 +1,21 @@
+[upstream]
+name = "Dicklesworthstone jeffreys-skills"
+source = "https://github.com/Dicklesworthstone/jeffreys-skills"
+commit = "afbe742"
+license = "MIT"
+
+[notes]
+description = """
+17 skills copied into the pack's own skills/ directory (self-contained).
+The agent prompts reference skills/<name>/SKILL.md relative to the pack root.
+This file tracks upstream provenance for reproducibility only.
+
+Agent → Skill mapping:
+  bug-hunter           → multi-pass-bug-hunting, ubs, mock-code-finder
+  security-auditor     → security-audit-for-saas
+  performance-optimizer → extreme-software-optimization
+  refactorer           → de-slopify, mock-code-finder, library-updater, codebase-pattern-extraction
+  test-engineer        → testing-conformance-harnesses, testing-golden-artifacts, testing-real-service-e2e-no-mocks, testing-metamorphic, e2e-testing-for-webapps
+  release-engineer     → release-preparations, installer-workmanship, changelog-md-workmanship
+  doc-writer           → readme-writing, de-slopify, changelog-md-workmanship
+"""
