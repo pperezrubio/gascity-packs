@@ -12,6 +12,14 @@ Map the attack surface first, then hunt for:
 
 Apply the five security axioms. Trace attack paths from entry point to dangerous sink.
 
-Write the consolidated findings to `{{artifact_root}}/harden/security-audit-report.md`.
+Write the security audit to `{{artifact_root}}/harden/security-audit-report.md`.
+Also write `{{artifact_root}}/harden/findings.md`, consolidating:
+
+- Bug-hunt findings from `{{artifact_root}}/harden/bug-hunt-report.md`
+- Security findings from this audit
+- Priority, affected files, and recommended owner for each fix
+
+The fix loop consumes `{{artifact_root}}/harden/findings.md`; do not leave it
+missing.
 
 Do NOT fix vulnerabilities — document them. The fix step routes them to the implementation worker.

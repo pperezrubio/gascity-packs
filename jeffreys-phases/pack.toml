@@ -5,3 +5,6 @@ schema = 2
 
 [imports.gc]
 source = "../gascity"
+
+[imports.ee]
+source = "../ee"

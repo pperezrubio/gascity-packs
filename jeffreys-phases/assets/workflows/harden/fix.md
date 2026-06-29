@@ -1,7 +1,11 @@
 # Harden: Fix Findings
 
-Read the bug hunt report at `{{artifact_root}}/harden/bug-hunt-report.md` and the
-security audit report at `{{artifact_root}}/harden/security-audit-report.md`.
+Read the consolidated findings file at `{{artifact_root}}/harden/findings.md`.
+If it is missing, stop and mark the bead blocked; do not infer findings from
+ad hoc searches. The source reports are:
+
+- `{{artifact_root}}/harden/bug-hunt-report.md`
+- `{{artifact_root}}/harden/security-audit-report.md`
 
 Fix every finding in priority order:
 1. **P0 findings first** — crashes, data loss, exploitable vulnerabilities

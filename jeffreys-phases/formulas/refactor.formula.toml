@@ -50,7 +50,6 @@ description_file = "../assets/workflows/refactor/clean.md"
 id = "update-deps"
 title = "Update dependencies to latest stable"
 needs = ["clean"]
-condition = "{{update_deps}} == true"
 metadata = { "gc.run_target" = "phases.refactorer" }
 description_file = "../assets/workflows/refactor/update-deps.md"
 

@@ -38,7 +38,6 @@ description_file = "../assets/workflows/document/readme.md"
 id = "api-docs"
 title = "Generate API documentation from source"
 needs = ["readme"]
-condition = "{{include_api_docs}} == true"
 metadata = { "gc.run_target" = "phases.doc-writer", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.api_docs_path" }
 description_file = "../assets/workflows/document/api-docs.md"
 

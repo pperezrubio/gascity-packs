@@ -72,7 +72,6 @@ description_file = "../assets/workflows/release/build.md"
 id = "publish"
 title = "Create release and publish packages"
 needs = ["build"]
-condition = "{{push}} == true"
 metadata = { "gc.run_target" = "gc.publisher" }
 description_file = "../assets/workflows/release/publish.md"
 

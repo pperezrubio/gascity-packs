@@ -10,11 +10,11 @@ post-greenfield software lifecycle:
 
 | Phase | Agent | Skills Embedded |
 |-------|-------|-----------------|
-| **Bug hunting** | `phases.bug-hunter` | multi-pass-bug-hunting, ubs, mock-code-finder |
+| **Bug hunting** | `phases.bug-hunter` | multi-pass-bug-hunting, ubs, mock-code-finder, deadlock-finder-and-fixer |
 | **Security audit** | `phases.security-auditor` | security-audit-for-saas (130+ patterns), testing-fuzzing |
 | **Performance optimization** | `phases.performance-optimizer` | extreme-software-optimization (profile → matrix → prove) |
-| **Code refactoring** | `phases.refactorer` | de-slopify, mock-code-finder, library-updater |
-| **Test engineering** | `phases.test-engineer` | conformance harnesses, golden artifacts, metamorphic, mock-free E2E |
+| **Code refactoring** | `phases.refactorer` | de-slopify, mock-code-finder, library-updater, codebase archaeology/audit/report |
+| **Test engineering** | `phases.test-engineer` | conformance harnesses, golden artifacts, metamorphic, mock-free E2E, fuzzing |
 | **Release engineering** | `phases.release-engineer` | release-preparations, installer-workmanship, changelog |
 | **Documentation** | `phases.doc-writer` | readme-writing, de-slopify, changelog generation |
 
@@ -39,7 +39,8 @@ post-greenfield software lifecycle:
 ## Prerequisites
 
 Import the base Gas City pack first — this pack imports `gascity` as `gc` and
-extends it with phase-specific agents and formulas.
+`ee` for memory/claim-gate prompt fragments, then extends them with
+phase-specific agents and formulas.
 
 ## Quick Start
 
@@ -140,7 +141,7 @@ changing the formula graph.
 
 ## What's Vendored
 
-- 17 skill directories under `skills/` (self-contained — the full original
+- 22 skill directories under `skills/` (self-contained — the full original
   SKILL.md + references/ + assets/ + subagents/ for each skill)
 - `vendor/jeffreys-skills/upstream.toml` — provenance tracking (source URL,
   pinned commit, license)
@@ -153,7 +154,9 @@ integration (tool restrictions, output paths, fix-vs-find separation).
 Skills included:
 multi-pass-bug-hunting, ubs, mock-code-finder, security-audit-for-saas,
 extreme-software-optimization, de-slopify, library-updater,
-codebase-pattern-extraction, testing-conformance-harnesses,
+codebase-pattern-extraction, codebase-archaeology, codebase-audit,
+codebase-report, deadlock-finder-and-fixer, testing-fuzzing,
+testing-conformance-harnesses,
 testing-golden-artifacts, testing-real-service-e2e-no-mocks,
 testing-metamorphic, e2e-testing-for-webapps, release-preparations,
 installer-workmanship, changelog-md-workmanship, readme-writing
