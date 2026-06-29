@@ -1,0 +1,10 @@
+[pack]
+name = "jeffreys-workflow"
+version = "0.1.0"
+schema = 2
+
+[imports.gc]
+source = "../gascity"
+
+[imports.ee]
+source = "../ee"

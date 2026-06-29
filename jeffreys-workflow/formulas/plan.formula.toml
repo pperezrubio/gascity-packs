@@ -1,0 +1,73 @@
+description = """
+Pre-implementation planning workflow. Produces a structured markdown plan and
+a bead DAG ready for swarm execution. Use before any significant implementation
+work begins. Based on Jeffrey Emanuel's 85%+ time-on-planning methodology.
+"""
+formula = "plan"
+version = 1
+contract = "graph.v2"
+target_required = true
+
+[vars]
+[vars.problem_statement]
+description = "What we're building and why."
+required = true
+
+[vars.codebase_path]
+description = "Path to the existing codebase for context (if any)."
+default = "."
+
+[[steps]]
+id = "understand"
+title = "Understand the project and existing code"
+metadata = { "gc.run_target" = "workflow.planner" }
+description = """
+Read AGENTS.md, README, existing ADRs, and relevant source files.
+Produce a summary of: current state, constraints, and key risks.
+"""
+
+[[steps]]
+id = "plan"
+title = "Write the implementation plan"
+needs = ["understand"]
+metadata = { "gc.run_target" = "workflow.planner" }
+description = """
+Write a structured markdown plan with: problem statement, architecture
+decisions, component breakdown, risk register, evidence requirements,
+and phase boundaries.
+"""
+
+[[steps]]
+id = "decompose"
+title = "Decompose plan into bead DAG"
+needs = ["plan"]
+metadata = { "gc.run_target" = "workflow.bead-architect" }
+description = """
+Convert the plan into hierarchical beads (epics + sub-tasks with dot
+notation). Set dependencies, add workflow labels (test-coverage-required,
+e2e-required, swarm-scale). Run bv triage to verify no cycles and
+identify critical path.
+"""
+
+[[steps]]
+id = "safety-review"
+title = "Safety review of plan"
+needs = ["decompose"]
+metadata = { "gc.run_target" = "workflow.safety-officer" }
+description = """
+Review the plan for destructive operations, risky migrations, or
+irreversible changes. Add dcg guards, slb checkpoints, or rch
+verification gates where needed.
+"""
+
+[[steps]]
+id = "finalize"
+title = "Finalize plan and bead DAG"
+needs = ["safety-review"]
+metadata = { "gc.run_target" = "workflow.planner" }
+description = """
+Final plan document + bead DAG ready for swarm dispatch. All beads
+have labels, dependencies, Gas City routing metadata (`gc.routed_to` where
+known), and evidence closure criteria. Do not treat static assignees as live
+claims; workers still claim ready routed work through `gc hook --claim --json`.
+"""

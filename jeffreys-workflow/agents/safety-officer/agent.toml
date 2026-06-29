@@ -1,0 +1,3 @@
+description = "Safety layer agent enforcing destructive command guards, two-person launch rules, and remote compilation verification. Prevents catastrophic agent actions."
+scope = "rig"
+fallback = true

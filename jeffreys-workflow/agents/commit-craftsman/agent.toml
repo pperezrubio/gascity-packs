@@ -1,0 +1,3 @@
+description = "Structured commit craftsmanship using root-cause analysis, evidence-based bead closure, and tiered commit body depth. Ensures every commit is a standalone proof artifact."
+scope = "rig"
+fallback = true

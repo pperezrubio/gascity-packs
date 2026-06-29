@@ -1,0 +1,85 @@
+description = """
+Safe commit review workflow. Ensures every commit packet follows the tiered
+body system, includes regression tests, passes DCG safety checks, and includes
+bead close evidence. Use before an implementation/run operator makes a commit
+or closes a bead.
+"""
+formula = "commit"
+version = 1
+contract = "graph.v2"
+target_required = true
+
+[vars]
+[vars.bead_id]
+description = "Bead ID being closed by this commit (e.g. ci-43a)."
+required = true
+
+[vars.change_description]
+description = "What changed and why."
+required = true
+
+[[steps]]
+id = "classify"
+title = "Classify fix complexity (determines commit body tier)"
+metadata = { "gc.run_target" = "workflow.commit-craftsman" }
+description = """
+Determine tier (1-4) based on fix complexity:
+- Tier 1: Complex (concurrency, security, architecture) → 6-9 sections
+- Tier 2: Moderate with verification → 2-4 sections
+- Tier 3: Simple with bead reference → 1 section
+- Tier 4: Trivial (clippy, deps) → empty body
+"""
+
+[[steps]]
+id = "regression-test"
+title = "Write/verify regression test"
+needs = ["classify"]
+metadata = { "gc.run_target" = "workflow.commit-craftsman" }
+description = """
+Every fix MUST include a regression test. If the test can't run,
+disclose why and prove the mechanism independently.
+"""
+
+[[steps]]
+id = "dcg-check"
+title = "Safety check"
+needs = ["regression-test"]
+metadata = { "gc.run_target" = "workflow.safety-officer" }
+description = """
+Run dcg check on any shell commands used. Verify no destructive
+operations. Verify no file deletion without permission.
+"""
+
+[[steps]]
+id = "compose"
+title = "Compose commit message"
+needs = ["dcg-check"]
+metadata = { "gc.run_target" = "workflow.commit-craftsman" }
+description = """
+Write the commit message following the tier template. Include:
+- Root cause (all abstraction layers)
+- Fix description with deliberate scope boundaries
+- "I did NOT do X because Y"
+- Tests with names
+- Verification evidence (or HONEST disclosure)
+- Bead reference: [ci-XXX]
+- Co-Authored-By
+"""
+
+[[steps]]
+id = "commit"
+title = "Prepare commit and close packet"
+needs = ["compose"]
+metadata = { "gc.run_target" = "workflow.commit-craftsman" }
+description = """
+Review the exact commit message, files, evidence, and bead close metadata.
+Return a commit packet that an implementation/run operator can execute if the
+claimed bead's contract requires a commit. Do not make the commit from the
+commit-craftsman role.
+
+The packet must include:
+- Structured commit subject/body
+- Regression-test evidence
+- Bead reference and required close metadata
+- Whether tracker metadata must be recorded separately from source changes
+"""

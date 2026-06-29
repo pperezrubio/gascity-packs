@@ -1,0 +1,3 @@
+description = "Multi-agent swarm coordination using Agent Mail file reservations, NTM pane orchestration, and multi-repo sync. Manages single-branch concurrent agent workflow."
+scope = "rig"
+fallback = true

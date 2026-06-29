@@ -1,0 +1,3 @@
+description = "Convert plans into hierarchical beads with dependencies, labels, and evidence-based closure criteria. Uses bd/br CLI and bv graph triage."
+scope = "rig"
+fallback = true

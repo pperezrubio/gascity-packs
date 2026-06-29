@@ -1,0 +1,86 @@
+description = """
+Multi-agent swarm execution workflow. Dispatches beads to agents, coordinates
+via Agent Mail file reservations, monitors via NTM, and tracks evidence-based
+closure. Uses single-branch, no-PR workflow under Gas City claim authority.
+Requires the plan formula to have completed first.
+"""
+formula = "swarm"
+version = 1
+contract = "graph.v2"
+target_required = true
+
+[vars]
+[vars.bead_filter]
+description = "Filter for which beads to dispatch (e.g. --status=open --label=swarm-scale)."
+default = "--status=open"
+
+[vars.max_agents]
+description = "Maximum concurrent agents."
+default = "2"
+
+[[steps]]
+id = "prepare"
+title = "Prepare swarm coordination"
+metadata = { "gc.run_target" = "workflow.swarm-coordinator" }
+description = """
+Register agent identities. Review bead DAG from plan formula. Identify
+critical path. Determine which beads can run in parallel based on
+dependencies. Run `bv` for graph triage, but treat it as ranking evidence
+only; it does not grant claim authority.
+"""
+
+[[steps]]
+id = "dispatch"
+title = "Dispatch beads to agents"
+needs = ["prepare"]
+metadata = { "gc.run_target" = "workflow.swarm-coordinator" }
+description = """
+Assign beads to agents. Each agent:
+1. Receives routed work from Gas City and claims it via `gc hook --claim --json`
+2. Uses EE claim-gate/work-packet evidence when available; unsafe or degraded
+   claim-gate evidence blocks dispatch rather than being treated as advisory
+3. Starts Agent Mail MCP session with `macro_start_session`
+4. Reserves target files via `file_reservation_paths(..., reason="<bead-id>")`
+5. Implements only the claimed bead, writes regression test, and records evidence
+6. Releases reservations with `release_file_reservations`
+7. Closes the same claimed bead with the required Gas City metadata and commit evidence
+"""
+
+[[steps]]
+id = "monitor"
+title = "Monitor swarm progress"
+needs = ["dispatch"]
+metadata = { "gc.run_target" = "workflow.swarm-coordinator" }
+description = """
+Monitor agents via NTM dashboard. Track:
+- Per-agent pressure timeline
+- Budget drift
+- File reservation conflicts
+- Blocked beads (need re-routing)
+When an agent finishes, verify reservation release and dispatch the next bead
+only through Gas City routing. Use `gc swarm status`, `gc swarm doctor`,
+`gc swarm plan`, `gc swarm packet`, or support-bundle surfaces when available.
+"""
+
+[[steps]]
+id = "verify"
+title = "Verify all beads closed with evidence"
+needs = ["monitor"]
+metadata = { "gc.run_target" = "workflow.commit-craftsman" }
+description = """
+Review all closed beads. Verify each has:
+- Commit hash evidence
+- Regression test
+- Reviewer attribution
+Reject any bead that closed without evidence.
+"""
+
+[[steps]]
+id = "finalize"
+title = "Finalize swarm session"
+needs = ["verify"]
+metadata = { "gc.run_target" = "workflow.swarm-coordinator" }
+description = """
+Generate swarm replay report. Update bead DAG with closure evidence.
+Document any blockers or deferred beads with reasons.
+"""

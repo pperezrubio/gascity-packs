@@ -1,0 +1,31 @@
+[upstream]
+name = "Dicklesworthstone jeffreys-skills"
+source = "https://github.com/Dicklesworthstone/jeffreys-skills"
+commit = "afbe742"
+license = "MIT"
+
+[preserved]
+source = "https://github.com/Dicklesworthstone/jeffreys-skills"
+note = "git-commit-craftsman was removed upstream 2026-06-26; preserved locally for commit methodology"
+
+[notes]
+description = """
+17 skills vendored from jeffreys-skills into the pack's own skills/ directory
+(self-contained). The agent prompts reference skills/<name>/SKILL.md relative
+to the pack root. This file tracks upstream provenance for reproducibility only.
+
+This pack covers the PRE-implementation and DURING-implementation phases:
+planning, bead decomposition, swarm coordination, safety, commit discipline,
+idea generation, and formal verification.
+
+Companion pack: jeffreys-phases (POST-implementation: bug hunting, security,
+testing, optimization, release).
+
+Agent → Skill mapping:
+  planner              → planning-workflow, agent-fungibility-philosophy, idea-wizard, reality-check-for-project
+  bead-architect       → beads-workflow, beads-br, beads-bv
+  swarm-coordinator    → agent-mail, ntm, ru-multi-repo-workflow, dueling-idea-wizards
+  safety-officer       → dcg, slb, rch
+  commit-craftsman     → git-commit-craftsman
+  formal-verifier      → lean-formal-feedback-loop
+"""
