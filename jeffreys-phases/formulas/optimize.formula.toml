@@ -33,7 +33,7 @@ default = "5"
 [[steps]]
 id = "prepare"
 title = "Prepare optimization context"
-metadata = { "gc.run_target" = "gc.run-operator" }
+metadata = { "gc.run_target" = "core.control-dispatcher" }
 description_file = "../assets/workflows/optimize/prepare.md"
 
 [[steps]]
@@ -56,7 +56,7 @@ title = "Implement optimizations (Score >= 2.0 only)"
 needs = ["analyze"]
 metadata = { "gc.run_target" = "gc.implementation-worker" }
 description_file = "../assets/workflows/optimize/implement.md"
-expand = "do-work"
+expand = "do-work-item"
 expand_vars = { implementation_target = "gc.implementation-worker" }
 
 [[steps]]
@@ -70,5 +70,5 @@ description_file = "../assets/workflows/optimize/verify.md"
 id = "finalize"
 title = "Finalize optimization report"
 needs = ["verify"]
-metadata = { "gc.run_target" = "gc.run-operator", "gc.build.artifact_schema" = "gc.build.final-report.v1", "gc.build.artifact_path_keys" = "gc.build.final_report_path" }
+metadata = { "gc.run_target" = "core.control-dispatcher", "gc.build.artifact_schema" = "gc.build.final-report.v1", "gc.build.artifact_path_keys" = "gc.build.final_report_path" }
 description_file = "../assets/workflows/optimize/finalize.md"

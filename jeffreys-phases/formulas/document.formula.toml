@@ -24,7 +24,7 @@ default = "true"
 [[steps]]
 id = "prepare"
 title = "Prepare documentation context"
-metadata = { "gc.run_target" = "gc.run-operator" }
+metadata = { "gc.run_target" = "core.control-dispatcher" }
 description_file = "../assets/workflows/document/prepare.md"
 
 [[steps]]
@@ -52,5 +52,5 @@ description_file = "../assets/workflows/document/changelog.md"
 id = "finalize"
 title = "Finalize documentation report"
 needs = ["changelog"]
-metadata = { "gc.run_target" = "gc.run-operator", "gc.build.artifact_schema" = "gc.build.final-report.v1", "gc.build.artifact_path_keys" = "gc.build.final_report_path" }
+metadata = { "gc.run_target" = "core.control-dispatcher", "gc.build.artifact_schema" = "gc.build.final-report.v1", "gc.build.artifact_path_keys" = "gc.build.final_report_path" }
 description_file = "../assets/workflows/document/finalize.md"

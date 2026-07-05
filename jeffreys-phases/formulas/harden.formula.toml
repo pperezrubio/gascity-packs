@@ -29,7 +29,7 @@ default = "5"
 [[steps]]
 id = "prepare"
 title = "Prepare hardening context"
-metadata = { "gc.run_target" = "gc.run-operator" }
+metadata = { "gc.run_target" = "core.control-dispatcher" }
 description_file = "../assets/workflows/harden/prepare.md"
 
 [[steps]]
@@ -52,7 +52,7 @@ title = "Fix findings from bug hunt and security audit"
 needs = ["security-audit"]
 metadata = { "gc.run_target" = "gc.implementation-worker" }
 description_file = "../assets/workflows/harden/fix.md"
-expand = "fix-loop"
+expand = "fix-loop-base"
 expand_vars = { findings_path = "{{artifact_root}}/harden/findings.md", implementation_target = "gc.implementation-worker", max_iterations = "{{max_iterations}}" }
 
 [[steps]]
@@ -66,5 +66,5 @@ description_file = "../assets/workflows/harden/verify.md"
 id = "finalize"
 title = "Finalize hardening report"
 needs = ["verify"]
-metadata = { "gc.run_target" = "gc.run-operator", "gc.build.artifact_schema" = "gc.build.final-report.v1", "gc.build.artifact_path_keys" = "gc.build.final_report_path" }
+metadata = { "gc.run_target" = "core.control-dispatcher", "gc.build.artifact_schema" = "gc.build.final-report.v1", "gc.build.artifact_path_keys" = "gc.build.final_report_path" }
 description_file = "../assets/workflows/harden/finalize.md"

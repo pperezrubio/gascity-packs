@@ -37,7 +37,7 @@ default = "false"
 [[steps]]
 id = "prepare"
 title = "Prepare release context"
-metadata = { "gc.run_target" = "gc.run-operator" }
+metadata = { "gc.run_target" = "core.control-dispatcher" }
 description_file = "../assets/workflows/release/prepare.md"
 
 [[steps]]
@@ -79,5 +79,5 @@ description_file = "../assets/workflows/release/publish.md"
 id = "finalize"
 title = "Finalize release report"
 needs = ["publish"]
-metadata = { "gc.run_target" = "gc.run-operator", "gc.build.artifact_schema" = "gc.build.final-report.v1", "gc.build.artifact_path_keys" = "gc.build.final_report_path" }
+metadata = { "gc.run_target" = "core.control-dispatcher", "gc.build.artifact_schema" = "gc.build.final-report.v1", "gc.build.artifact_path_keys" = "gc.build.final_report_path" }
 description_file = "../assets/workflows/release/finalize.md"
