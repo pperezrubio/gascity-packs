@@ -52,8 +52,6 @@ title = "Fix findings from bug hunt and security audit"
 needs = ["security-audit"]
 metadata = { "gc.run_target" = "gc.implementation-worker" }
 description_file = "../assets/workflows/harden/fix.md"
-expand = "fix-loop-base"
-expand_vars = { findings_path = "{{artifact_root}}/harden/findings.md", implementation_target = "gc.implementation-worker", max_iterations = "{{max_iterations}}" }
 
 [[steps]]
 id = "verify"

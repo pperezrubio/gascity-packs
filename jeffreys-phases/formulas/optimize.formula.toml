@@ -56,8 +56,6 @@ title = "Implement optimizations (Score >= 2.0 only)"
 needs = ["analyze"]
 metadata = { "gc.run_target" = "gc.implementation-worker" }
 description_file = "../assets/workflows/optimize/implement.md"
-expand = "do-work-item"
-expand_vars = { implementation_target = "gc.implementation-worker" }
 
 [[steps]]
 id = "verify"
