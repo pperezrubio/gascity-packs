@@ -44,28 +44,28 @@ description_file = "../assets/workflows/release/prepare.md"
 id = "test-gate"
 title = "Run test suites, fix broken tests"
 needs = ["prepare"]
-metadata = { "gc.run_target" = "phases.release-engineer" }
+metadata = { "gc.run_target" = "jeffreys-phases.release-engineer" }
 description_file = "../assets/workflows/release/test-gate.md"
 
 [[steps]]
 id = "version-bump"
 title = "Bump versions in all manifests"
 needs = ["test-gate"]
-metadata = { "gc.run_target" = "phases.release-engineer", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.version_path" }
+metadata = { "gc.run_target" = "jeffreys-phases.release-engineer", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.version_path" }
 description_file = "../assets/workflows/release/version-bump.md"
 
 [[steps]]
 id = "changelog"
 title = "Rebuild CHANGELOG.md from git history"
 needs = ["version-bump"]
-metadata = { "gc.run_target" = "phases.doc-writer", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.changelog_path" }
+metadata = { "gc.run_target" = "jeffreys-phases.doc-writer", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.changelog_path" }
 description_file = "../assets/workflows/release/changelog.md"
 
 [[steps]]
 id = "build"
 title = "Build cross-platform binaries with checksums"
 needs = ["changelog"]
-metadata = { "gc.run_target" = "phases.release-engineer", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.build_path" }
+metadata = { "gc.run_target" = "jeffreys-phases.release-engineer", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.build_path" }
 description_file = "../assets/workflows/release/build.md"
 
 [[steps]]

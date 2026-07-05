@@ -36,14 +36,14 @@ description_file = "../assets/workflows/harden/prepare.md"
 id = "bug-hunt"
 title = "Multi-pass bug hunt"
 needs = ["prepare"]
-metadata = { "gc.run_target" = "phases.bug-hunter", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.bug_hunt_path" }
+metadata = { "gc.run_target" = "jeffreys-phases.bug-hunter", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.bug_hunt_path" }
 description_file = "../assets/workflows/harden/hunt.md"
 
 [[steps]]
 id = "security-audit"
 title = "Security vulnerability audit"
 needs = ["bug-hunt"]
-metadata = { "gc.run_target" = "phases.security-auditor", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.security_audit_path" }
+metadata = { "gc.run_target" = "jeffreys-phases.security-auditor", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.security_audit_path" }
 description_file = "../assets/workflows/harden/security.md"
 
 [[steps]]
@@ -59,7 +59,7 @@ expand_vars = { findings_path = "{{artifact_root}}/harden/findings.md", implemen
 id = "verify"
 title = "Verify all fixes — clean scan and tests pass"
 needs = ["fix"]
-metadata = { "gc.run_target" = "phases.bug-hunter", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.verify_path" }
+metadata = { "gc.run_target" = "jeffreys-phases.bug-hunter", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.verify_path" }
 description_file = "../assets/workflows/harden/verify.md"
 
 [[steps]]

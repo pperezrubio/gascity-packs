@@ -21,7 +21,7 @@ required = true
 [[steps]]
 id = "classify"
 title = "Classify fix complexity (determines commit body tier)"
-metadata = { "gc.run_target" = "workflow.commit-craftsman" }
+metadata = { "gc.run_target" = "jeffreys-workflow.commit-craftsman" }
 description = """
 Determine tier (1-4) based on fix complexity:
 - Tier 1: Complex (concurrency, security, architecture) → 6-9 sections
@@ -34,7 +34,7 @@ Determine tier (1-4) based on fix complexity:
 id = "regression-test"
 title = "Write/verify regression test"
 needs = ["classify"]
-metadata = { "gc.run_target" = "workflow.commit-craftsman" }
+metadata = { "gc.run_target" = "jeffreys-workflow.commit-craftsman" }
 description = """
 Every fix MUST include a regression test. If the test can't run,
 disclose why and prove the mechanism independently.
@@ -44,7 +44,7 @@ disclose why and prove the mechanism independently.
 id = "dcg-check"
 title = "Safety check"
 needs = ["regression-test"]
-metadata = { "gc.run_target" = "workflow.safety-officer" }
+metadata = { "gc.run_target" = "jeffreys-workflow.safety-officer" }
 description = """
 Run dcg check on any shell commands used. Verify no destructive
 operations. Verify no file deletion without permission.
@@ -54,7 +54,7 @@ operations. Verify no file deletion without permission.
 id = "compose"
 title = "Compose commit message"
 needs = ["dcg-check"]
-metadata = { "gc.run_target" = "workflow.commit-craftsman" }
+metadata = { "gc.run_target" = "jeffreys-workflow.commit-craftsman" }
 description = """
 Write the commit message following the tier template. Include:
 - Root cause (all abstraction layers)
@@ -70,7 +70,7 @@ Write the commit message following the tier template. Include:
 id = "commit"
 title = "Prepare commit and close packet"
 needs = ["compose"]
-metadata = { "gc.run_target" = "workflow.commit-craftsman" }
+metadata = { "gc.run_target" = "jeffreys-workflow.commit-craftsman" }
 description = """
 Review the exact commit message, files, evidence, and bead close metadata.
 Return a commit packet that an implementation/run operator can execute if the

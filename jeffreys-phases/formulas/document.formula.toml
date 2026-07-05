@@ -31,21 +31,21 @@ description_file = "../assets/workflows/document/prepare.md"
 id = "readme"
 title = "Generate or revise README.md"
 needs = ["prepare"]
-metadata = { "gc.run_target" = "phases.doc-writer", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.readme_path" }
+metadata = { "gc.run_target" = "jeffreys-phases.doc-writer", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.readme_path" }
 description_file = "../assets/workflows/document/readme.md"
 
 [[steps]]
 id = "api-docs"
 title = "Generate API documentation from source"
 needs = ["readme"]
-metadata = { "gc.run_target" = "phases.doc-writer", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.api_docs_path" }
+metadata = { "gc.run_target" = "jeffreys-phases.doc-writer", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.api_docs_path" }
 description_file = "../assets/workflows/document/api-docs.md"
 
 [[steps]]
 id = "changelog"
 title = "Rebuild CHANGELOG.md from git history"
 needs = ["api-docs"]
-metadata = { "gc.run_target" = "phases.doc-writer", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.changelog_path" }
+metadata = { "gc.run_target" = "jeffreys-phases.doc-writer", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.changelog_path" }
 description_file = "../assets/workflows/document/changelog.md"
 
 [[steps]]

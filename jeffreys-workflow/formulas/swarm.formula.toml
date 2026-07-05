@@ -21,7 +21,7 @@ default = "2"
 [[steps]]
 id = "prepare"
 title = "Prepare swarm coordination"
-metadata = { "gc.run_target" = "workflow.swarm-coordinator" }
+metadata = { "gc.run_target" = "jeffreys-workflow.swarm-coordinator" }
 description = """
 Register agent identities. Review bead DAG from plan formula. Identify
 critical path. Determine which beads can run in parallel based on
@@ -33,7 +33,7 @@ only; it does not grant claim authority.
 id = "dispatch"
 title = "Dispatch beads to agents"
 needs = ["prepare"]
-metadata = { "gc.run_target" = "workflow.swarm-coordinator" }
+metadata = { "gc.run_target" = "jeffreys-workflow.swarm-coordinator" }
 description = """
 Assign beads to agents. Each agent:
 1. Receives routed work from Gas City and claims it via `gc hook --claim --json`
@@ -50,7 +50,7 @@ Assign beads to agents. Each agent:
 id = "monitor"
 title = "Monitor swarm progress"
 needs = ["dispatch"]
-metadata = { "gc.run_target" = "workflow.swarm-coordinator" }
+metadata = { "gc.run_target" = "jeffreys-workflow.swarm-coordinator" }
 description = """
 Monitor agents via NTM dashboard. Track:
 - Per-agent pressure timeline
@@ -66,7 +66,7 @@ only through Gas City routing. Use `gc swarm status`, `gc swarm doctor`,
 id = "verify"
 title = "Verify all beads closed with evidence"
 needs = ["monitor"]
-metadata = { "gc.run_target" = "workflow.commit-craftsman" }
+metadata = { "gc.run_target" = "jeffreys-workflow.commit-craftsman" }
 description = """
 Review all closed beads. Verify each has:
 - Commit hash evidence
@@ -79,7 +79,7 @@ Reject any bead that closed without evidence.
 id = "finalize"
 title = "Finalize swarm session"
 needs = ["verify"]
-metadata = { "gc.run_target" = "workflow.swarm-coordinator" }
+metadata = { "gc.run_target" = "jeffreys-workflow.swarm-coordinator" }
 description = """
 Generate swarm replay report. Update bead DAG with closure evidence.
 Document any blockers or deferred beads with reasons.

@@ -36,21 +36,21 @@ description_file = "../assets/workflows/refactor/prepare.md"
 id = "audit"
 title = "Full codebase audit"
 needs = ["prepare"]
-metadata = { "gc.run_target" = "phases.refactorer", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.audit_path" }
+metadata = { "gc.run_target" = "jeffreys-phases.refactorer", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.audit_path" }
 description_file = "../assets/workflows/refactor/audit.md"
 
 [[steps]]
 id = "clean"
 title = "Remove AI slop, dead code, stubs, unnecessary abstractions"
 needs = ["audit"]
-metadata = { "gc.run_target" = "phases.refactorer" }
+metadata = { "gc.run_target" = "jeffreys-phases.refactorer" }
 description_file = "../assets/workflows/refactor/clean.md"
 
 [[steps]]
 id = "update-deps"
 title = "Update dependencies to latest stable"
 needs = ["clean"]
-metadata = { "gc.run_target" = "phases.refactorer" }
+metadata = { "gc.run_target" = "jeffreys-phases.refactorer" }
 description_file = "../assets/workflows/refactor/update-deps.md"
 
 [[steps]]

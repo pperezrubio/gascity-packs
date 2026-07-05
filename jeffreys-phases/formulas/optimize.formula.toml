@@ -40,14 +40,14 @@ description_file = "../assets/workflows/optimize/prepare.md"
 id = "baseline"
 title = "Establish performance baseline"
 needs = ["prepare"]
-metadata = { "gc.run_target" = "phases.performance-optimizer", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.baseline_path" }
+metadata = { "gc.run_target" = "jeffreys-phases.performance-optimizer", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.baseline_path" }
 description_file = "../assets/workflows/optimize/baseline.md"
 
 [[steps]]
 id = "analyze"
 title = "Profile and build opportunity matrix"
 needs = ["baseline"]
-metadata = { "gc.run_target" = "phases.performance-optimizer", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.matrix_path" }
+metadata = { "gc.run_target" = "jeffreys-phases.performance-optimizer", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.matrix_path" }
 description_file = "../assets/workflows/optimize/analyze.md"
 
 [[steps]]
@@ -63,7 +63,7 @@ expand_vars = { implementation_target = "gc.implementation-worker" }
 id = "verify"
 title = "Prove behavior unchanged (isomorphism + golden checksums)"
 needs = ["implement"]
-metadata = { "gc.run_target" = "phases.performance-optimizer", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.verify_path" }
+metadata = { "gc.run_target" = "jeffreys-phases.performance-optimizer", "gc.build.artifact_schema" = "gc.build.report.v1", "gc.build.artifact_path_keys" = "gc.build.verify_path" }
 description_file = "../assets/workflows/optimize/verify.md"
 
 [[steps]]

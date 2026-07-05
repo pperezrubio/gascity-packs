@@ -20,7 +20,7 @@ default = "."
 [[steps]]
 id = "understand"
 title = "Understand the project and existing code"
-metadata = { "gc.run_target" = "workflow.planner" }
+metadata = { "gc.run_target" = "jeffreys-workflow.planner" }
 description = """
 Read AGENTS.md, README, existing ADRs, and relevant source files.
 Produce a summary of: current state, constraints, and key risks.
@@ -30,7 +30,7 @@ Produce a summary of: current state, constraints, and key risks.
 id = "plan"
 title = "Write the implementation plan"
 needs = ["understand"]
-metadata = { "gc.run_target" = "workflow.planner" }
+metadata = { "gc.run_target" = "jeffreys-workflow.planner" }
 description = """
 Write a structured markdown plan with: problem statement, architecture
 decisions, component breakdown, risk register, evidence requirements,
@@ -41,7 +41,7 @@ and phase boundaries.
 id = "decompose"
 title = "Decompose plan into bead DAG"
 needs = ["plan"]
-metadata = { "gc.run_target" = "workflow.bead-architect" }
+metadata = { "gc.run_target" = "jeffreys-workflow.bead-architect" }
 description = """
 Convert the plan into hierarchical beads (epics + sub-tasks with dot
 notation). Set dependencies, add workflow labels (test-coverage-required,
@@ -53,7 +53,7 @@ identify critical path.
 id = "safety-review"
 title = "Safety review of plan"
 needs = ["decompose"]
-metadata = { "gc.run_target" = "workflow.safety-officer" }
+metadata = { "gc.run_target" = "jeffreys-workflow.safety-officer" }
 description = """
 Review the plan for destructive operations, risky migrations, or
 irreversible changes. Add dcg guards, slb checkpoints, or rch
@@ -64,7 +64,7 @@ verification gates where needed.
 id = "finalize"
 title = "Finalize plan and bead DAG"
 needs = ["safety-review"]
-metadata = { "gc.run_target" = "workflow.planner" }
+metadata = { "gc.run_target" = "jeffreys-workflow.planner" }
 description = """
 Final plan document + bead DAG ready for swarm dispatch. All beads
 have labels, dependencies, Gas City routing metadata (`gc.routed_to` where
