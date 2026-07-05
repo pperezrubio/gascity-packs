@@ -10,10 +10,6 @@ contract = "graph.v2"
 target_required = true
 
 [vars]
-[vars.bead_id]
-description = "Bead ID being closed by this commit (e.g. ci-43a)."
-required = true
-
 [vars.change_description]
 description = "What changed and why."
 required = true
